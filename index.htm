@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en-us" ng-app="myApp">
+
+<head>
+    <title>AngularJS Form Project</title>
+
+    <meta name="Chris B" content="Wedding Form">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta charset="UTF-8">
+    <!-- Current version tested on localhost via Python HTTPsimpleserver !-->
+
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
+    <style>
+        html,
+        body,
+        input,
+        select,
+        textarea {
+            font-size: 1.05em;
+        }
+    </style>
+
+    <script src="//code.angularjs.org/1.3.0-rc.1/angular.min.js"></script>
+    <script src="app.js"></script>
+</head>
+
+<body>
+
+    <header>
+        <nav class="" navbar navbar-light " style="background-color: #e3f2fd; "">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="/">Wedding Invite Response Form</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div ng-controller="mainController">
+            <hr />
+            <div>
+                <label>Name</label>
+                <input type="text" ng-model="guest" />
+
+                <label>Members of your party</label>
+                <input type="text" ng-model="number" />
+
+            </div>
+
+            <hr />
+
+            <h1>Respondent : {{ lowercaseguest() }}</h1>
+
+            <h2>Party of:{{ lowercasenumber() }}</h2>
+        </div>
+    </div>
+</body>
+
+</html>
