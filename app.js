@@ -1,18 +1,38 @@
 const express = require('express');
-const mongoose = require('mongoose');
+    mongoose = require('mongoose');
 
+var db = mongoose.connect("mongodb://localhost/gymAPI");
 var app = express();
+
+var Gym = require('./models/gymModel');
 
 var port = process.env.PORT || 4000;
 
-var mainRouter = express.Router();
+var gymRouter = express.Router();
 
-mainRouter.route('/main')
+gymRouter.route('/gyms')
     .get(function(req, res){
-        var responseJson = {hello: "this tests API"};
-        res.json(responseJson);
+        Gym.find(function(err,gyms){
+            if(err)
+                console.log(error);
+            else
+                res.json (gyms);
+        });
+        
  });
-app.use('/api', mainRouter);
+
+ gymRouter.route('/gyms/:gymId')
+    .get(function(req, res){
+        Gym.findById(req.params.gymId, function(err,gym){
+            if(err)
+                console.log(error);
+            else
+                res.json (gym);
+        });
+        
+ });
+ 
+app.use('/api', gymRouter);
 
 app.get('/', function(req,res){
     res.send('testing here');
