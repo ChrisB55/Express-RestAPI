@@ -1,5 +1,6 @@
 const express = require('express');
     mongoose = require('mongoose');
+    bodyParser = require('body-parser');
 
 var db = mongoose.connect("mongodb://localhost/gymAPI");
 var app = express();
@@ -10,7 +11,16 @@ var port = process.env.PORT || 4000;
 
 var gymRouter = express.Router();
 
+app.use(bodyParser.urlencoded({extended:true})); 
+app.use(bodyParser.json());
+
 gymRouter.route('/gyms')
+    .post(function (req,res){
+        var gym = new Gym(req.body);
+        gym.save();
+        res.status(201).send(gym);
+        
+    })
     .get(function(req, res){
         Gym.find(function(err,gyms){
             if(err)
@@ -32,6 +42,7 @@ gymRouter.route('/gyms')
         
  });
  
+
 app.use('/api', gymRouter);
 
 app.get('/', function(req,res){
