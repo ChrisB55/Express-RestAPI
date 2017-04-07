@@ -9,41 +9,14 @@ var Gym = require('./models/gymModel');
 
 var port = process.env.PORT || 4000;
 
-var gymRouter = express.Router();
+
+var gymRouter = require('./Routes/gymRoutes')(Gym);
 
 app.use(bodyParser.urlencoded({extended:true})); 
 app.use(bodyParser.json());
 
-gymRouter.route('/gyms')
-    .post(function (req,res){
-        var gym = new Gym(req.body);
-        gym.save();
-        res.status(201).send(gym);
-        
-    })
-    .get(function(req, res){
-        Gym.find(function(err,gyms){
-            if(err)
-                console.log(error);
-            else
-                res.json (gyms);
-        });
-        
- });
 
- gymRouter.route('/gyms/:gymId')
-    .get(function(req, res){
-        Gym.findById(req.params.gymId, function(err,gym){
-            if(err)
-                console.log(error);
-            else
-                res.json (gym);
-        });
-        
- });
- 
-
-app.use('/api', gymRouter);
+app.use('/api/', gymRouter);
 
 app.get('/', function(req,res){
     res.send('testing here');
