@@ -28,9 +28,21 @@ gymRouter.route('/gyms')
                 res.json (gym);
         });
         
- });
+ })
+    .put(function (req,res) {
+      Gym.findById(req.params.gymId, function(err,gym){
+            if(err)
+                console.log(error);
+            else
+                gym.name = req.body.name;
+                gym.address = req.body.address;
+                gym.PhoneNumber = req.body.PhoneNumber;
+                gym.name = req.body.read;
+                gym.save();
+                res.json (gym);
+        }); 
+    });
  return gymRouter;
-
 };
 
 module.exports = routes;
