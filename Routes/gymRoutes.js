@@ -18,7 +18,7 @@ var gymRouter = express.Router();
         });
         
  });
- gymRouter.use('/:gymId', function(res,req, next){
+ gymRouter.use('/:gymId', function(req,res next){
      Gym.findById(req.params.gymId, function(err,gym){
             if(err)
                 res.status(500).send(err);
@@ -30,7 +30,7 @@ var gymRouter = express.Router();
                 res.status(404).send('No Resourse Available');
         });
  })
- gymRouter.route('/gyms/:gymId')
+ gymRouter.route('/:gymId')
     .get(function(req, res){
         res.json (req.gym);
  })
@@ -38,7 +38,7 @@ var gymRouter = express.Router();
                 req.gym.name = req.body.name;
                 req.gym.address = req.body.address;
                 req.gym.PhoneNumber = req.body.PhoneNumber;
-                req.gym.name = req.body.read;
+                req.gym.name = req.body.name;
                 req.gym.save(function(err) {
                     if(err)
                 res.status(500).send(err);
