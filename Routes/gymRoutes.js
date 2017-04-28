@@ -6,16 +6,14 @@ var routes = function(Gym){
 
     gymRouter.route('/')
         .post(function(req, res){
-           
-            var gym= new Gym(req.body);
+            var gym = new Gym(req.body);
             gym.save();
-            res.status().send(gym);
+            res.status(201).send(gym);
 
         })
         .get(function(req,res){
 
             var query = {};
-
             if(req.query.address)
             {
                 query.address = req.query.address;
@@ -27,14 +25,15 @@ var routes = function(Gym){
                     res.json(gyms);
             });
         });
-// This router middleware handles .put, .delete.
+
+// Router middleware .use
     gymRouter.use('/:gymId', function(req,res,next){
         Gym.findById(req.params.gymId, function(err,gym){
             if(err)
                 res.status(500).send(err);
             else if(gym)
             {
-                req.gym = gym
+                req.gym = gym;
                 next();
             }
             else
@@ -43,6 +42,7 @@ var routes = function(Gym){
             }
         });
     });
+    // .put, .patch .delete handled here. 
     gymRouter.route('/:gymId')
         .get(function(req,res){
 
@@ -50,15 +50,33 @@ var routes = function(Gym){
 
         })
         .put(function(req,res){
-            req.gym.name = req.body.name;
-            req.gym.address = req.body.address;
-            req.gym.phoneNumber = req.body.phoneNumber;
-            req.gym.sports = req.body.sports;
+            req.gym.name = req.gym.name;
+            req.gym.address = req.gym.address;
+            req.gym.phoneNumber = req.gym.phonenumber;
+            req.gym.sports = req.gym.sports;
+            
             req.gym.save(function(err){
                 if(err)
                     res.status(500).send(err);
                 else{
-                    res.json(req.gyms);
+                    res.json(req.gym);
+                }
+            });
+        })
+        .patch(function(req,res){
+            if(req.body._id)
+                delete req.body._id;
+
+            for(var i in req.body)
+            {
+                req.gym[i] = req.body[i];
+            }
+
+            req.gym.save(function(err){
+                if(err)
+                    res.status(500).send(err);
+                else{
+                    res.json(req.gym);
                 }
             });
         })
@@ -67,7 +85,7 @@ var routes = function(Gym){
                 if(err)
                     res.status(500).send(err);
                 else{
-                    res.status(204).send('gym removed');
+                    res.status(204).send('Item deleted');
                 }
             });
         });
