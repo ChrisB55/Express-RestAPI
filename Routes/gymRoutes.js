@@ -50,10 +50,10 @@ var routes = function(Gym){
 
         })
         .put(function(req,res){
-            req.gym.name = req.gym.name;
-            req.gym.address = req.gym.address;
-            req.gym.phoneNumber = req.gym.phonenumber;
-            req.gym.sports = req.gym.sports;
+            req.gym.name = req.body.name;
+            req.gym.address = req.body.address;
+            req.gym.phoneNumber = req.body.phonenumber;
+            req.gym.sports = req.body.sports;
             
             req.gym.save(function(err){
                 if(err)
