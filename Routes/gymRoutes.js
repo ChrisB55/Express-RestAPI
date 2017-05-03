@@ -1,24 +1,24 @@
 const express = require('express');
 
 //This routes object handles .get,.post for the API.
-var routes = function(Gym){
+var routes = (Gym)=>{
     var gymRouter = express.Router();
 
     gymRouter.route('/')
-        .post(function(req, res){
+        .post((req, res)=>{
             var gym = new Gym(req.body);
             gym.save();
             res.status(201).send(gym);
 
         })
-        .get(function(req,res){
+        .get((req,res)=> {
 
             var query = {};
             if(req.query.address)
             {
                 query.address = req.query.address;
             }
-            Gym.find(query, function(err,gyms){
+            Gym.find(query, (err,gyms)=>{
                 if(err)
                     res.status(500).send(err);
                 else
@@ -27,8 +27,8 @@ var routes = function(Gym){
         });
 
 // Router middleware .use
-    gymRouter.use('/:gymId', function(req,res,next){
-        Gym.findById(req.params.gymId, function(err,gym){
+    gymRouter.use('/:gymId', (req,res,next)=> {
+        Gym.findById(req.params.gymId, (err,gym)=> {
             if(err)
                 res.status(500).send(err);
             else if(gym)
@@ -44,18 +44,18 @@ var routes = function(Gym){
     });
     // .put, .patch .delete handled here. 
     gymRouter.route('/:gymId')
-        .get(function(req,res){
+        .get((req,res) => {
 
             res.json(req.gym);
 
         })
-        .put(function(req,res){
+        .put((req, res)=> {
             req.gym.name = req.body.name;
             req.gym.address = req.body.address;
             req.gym.phoneNumber = req.body.phonenumber;
             req.gym.sports = req.body.sports;
             
-            req.gym.save(function(err){
+            req.gym.save((err)=>{
                 if(err)
                     res.status(500).send(err);
                 else{
@@ -63,7 +63,7 @@ var routes = function(Gym){
                 }
             });
         })
-        .patch(function(req,res){
+        .patch((req, res)=> {
             if(req.body._id)
                 delete req.body._id;
 
@@ -72,7 +72,7 @@ var routes = function(Gym){
                 req.gym[i] = req.body[i];
             }
 
-            req.gym.save(function(err){
+            req.gym.save((err)=>{
                 if(err)
                     res.status(500).send(err);
                 else{
@@ -80,8 +80,8 @@ var routes = function(Gym){
                 }
             });
         })
-        .delete(function(req,res){
-            req.gym.remove(function(err){
+        .delete((req,res)=>{
+            req.gym.remove((err)=>{
                 if(err)
                     res.status(500).send(err);
                 else{

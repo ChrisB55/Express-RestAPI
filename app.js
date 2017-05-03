@@ -1,28 +1,29 @@
-const express = require('express');
-    mongoose = require('mongoose');
+const express = require('express'),
+    mongoose = require('mongoose'),
     bodyParser = require('body-parser');
 
-var db = mongoose.connect("mongodb://localhost/gymAPI");
+
+const db = mongoose.connect('mongodb://localhost/gymAPI');
+
+const Gym = require('./models/gymModel');
+
 var app = express();
 
-var Gym = require('./models/gymModel');
+var port = process.env.PORT || 5000;
 
-var port = process.env.PORT || 4000;
-
-
-var gymRouter = require('./Routes/gymRoutes')(Gym);
-
-app.use(bodyParser.urlencoded({extended:true})); 
+app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 
+gymRouter = require('./Routes/gymRoutes')(Gym);
 
-app.use('/api/', gymRouter);
 
-app.get('/', function(req,res){
-    res.send('testing here');
+app.use('/api/gyms', gymRouter); 
+
+
+app.get('/', function(req, res){
+    res.send('Testing here');
 });
 
-app.listen(port, function() {
-    console.log('We are running at ' + port);
+app.listen(port, function(){
+    console.log('We are running  on  PORT: ' + port);
 });
-
